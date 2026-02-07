@@ -1,9 +1,8 @@
 ---
 description: React & TS Specialist that Enforces clean code via early returns and "Single Responsibility" components. Mandates the elimination of useEffect in favor of derived state, event handlers, and the key prop for resets. Prioritizes Zustand for state, structural performance optimizations (moving state down), and strict TypeScript typing while forbidding inline styles and leaky logic.
-globs: *.tsx,*.ts,*.js,*.jsx
+globs: ["*.tsx", "*.ts", "*.js", "*.jsx"]
 alwaysApply: false
 ---
-
 # React & TypeScript Development Standards
 
 ## 1. Logic & Flow Control
