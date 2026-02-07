@@ -12,6 +12,7 @@ alwaysApply: false
 - **Simplicity:** Favor simplicity over "clever" code. Avoid recursion, deep callbacks, and complex abstractions unless strictly necessary.
 - **Separation of Concerns:** Follow the Single Responsibility Principle. Do not extract methods smaller than 7-8 lines.
 - **Defensive Programming:** Use defensive checks where PHP type-hinting cannot fully guarantee data integrity.
+- **Method Limits:** Methods should have a maximum of **4 parameters**.
 - **State Validation:** Ensure methods or classes are not performed on unintended data states. (e.g., A `cancel()` method on a `Reservation` model must first check if the status allows cancellation, throwing an exception if not).
 - **Scope:** Keep variables as close as possible to the block where they are consumed.
 - **Self-Documenting Code:** Write code that explains _what_ it does through naming.
@@ -22,7 +23,6 @@ alwaysApply: false
 - **PHPDoc:** Only use PHPDoc to define complex data structures (arrays of objects). Do not use `@param` or `@return` for types already covered by native PHP type hints. Limit PHPDoc nesting to 1-2 levels.
 - **Value Objects:** Encapsulate domain concepts (Email, Money) into objects that validate domain invariants in the constructor.
 - **Strict Typing:** Always type-hint method parameters and return types. Avoid type juggling.
-- **Method Limits:** Methods should have a maximum of **4 parameters**.
 - **Null Object Pattern:** Favor returning a new, empty instance of an object (e.g., `return new Cart();`) instead of `null` to avoid union type hints and simplify caller logic.
 
 ## 3. PHP Conventions
