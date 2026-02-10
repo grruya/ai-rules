@@ -14,6 +14,8 @@ alwaysApply: false
 - **Self-Documenting Code:** Write code that explains _what_ it does through naming.
 - **Naming:** Use full, descriptive words. Avoid abbreviations (e.g., use `const subscription` instead of `const sub`).
 
+## 2. Comments: never add them to my code no matter what
+
 ## 3. Component Architecture
 
 - **Single Responsibility:** Each component or hook must care only about its scope. Do not leak parent logic into children (e.g., a `Form` child should not manage a `Wizard` parent's state).
