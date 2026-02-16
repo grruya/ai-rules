@@ -64,6 +64,8 @@ paths:
 - **N+1 Prevention:** Generate code that prevents N+1 query problems by using eager loading. Use the query builder only for very complex operations.
 - **Model Creation:** When creating new models, create useful factories and seeders for them too. Ask the user if they need any other things, using `list-artisan-commands` to check the available options to `php artisan make:model`.
 - **Custom Casts:** Use Custom Casts to bridge DB primitives and rich Value Objects in models.
+- **Hidden columns:** Make sure to put sensitive data that should not be accessible to public in hidden array
+- **Unguarded Models:** In case the project uses unguarded models then dont use the fillable array just make sure to guard sensitive data
 
 ## 9. Testing
 

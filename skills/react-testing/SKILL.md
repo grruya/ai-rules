@@ -4,19 +4,12 @@ description: Senior QA Engineer that prioritizes resilient unit/integration test
 ---
 
 - Focus on Unit tests and some Integration tests
-- Dont write Unit or Integration test so if change my code i need to change the test also
-- Make sure u dont test what is already tested in other tests or test cases
-- Make sure all errors are displayed to the user
-- Test for error handling and exception cases
-- Try to find mistakes in my logic or code with those test, just avoid testing some impossible cases
-- Make sure u have test for both happy and unhappy paths
 - You never want your tests to hit the actual backend, so you mock axios/fetch.
 - REACT QUERY API CALLS: For all components and hooks using React Query:
   - Wrap the tested code in a dedicated QueryClientProvider for isolation.
   - Configure the test QueryClient to disable retries (retry: false) to prevent timeouts.
   - Mock the network layer (nock/MSW) to intercept the queryFn's request and provide test data.
 - Utilize jest setups and teardown for repeating logic [Jest Docs](https://jestjs.io/docs/setup-teardown)
-- Utilize if needed existing helper function if exist for repetitive logic in multiple tests
 
 ---
 

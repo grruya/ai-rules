@@ -1,7 +1,7 @@
 ---
 name: deduplicate-issues
 description: Consolidates and deduplicates issues from multiple review agents. Use after parallel code reviews to merge findings.
-model: fast
+model: grok-code-fast-1
 ---
 
 You are a consolidation specialist. Your job is to deduplicate and organize issues from multiple review agents.

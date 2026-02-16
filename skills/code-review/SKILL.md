@@ -1,54 +1,101 @@
 ---
 name: review
-description: Multi-step code review
+description: >-
+  Multi-step code review workflow. Activates when the user requests a code review,
+  security audit, or analysis of a feature/flow. Use this skill to perform
+  comprehensive code reviews that discover files, map execution flows, and
+  identify security, logic, and performance issues.
 ---
 
-# Review: $ARGUMENTS
+# Code Review Workflow
 
-## Step 1: Discovery
-Use feature-file-discovery subagent with prompt: "Find all files related to: $ARGUMENTS"
-Store the file list.
+This skill orchestrates a comprehensive code review by delegating to specialized subagents. Each subagent's behavior is defined in `.cursor/agents/` - this skill focuses on orchestration and data flow.
 
-## Step 2: Code Execution Flow Mapping  
-Use execution-flow subagent with prompt: "Map the flow for these files: [file list from Step 1]"
-Store the flow path.
+## Workflow Steps
 
-## Step 3: Parallel Review
-Launch these subagents in parallel, passing the file list and flow path:
-- security-reviewer
-- logic-reviewer
-- performance-reviewer
+### Step 1: Discovery
+Delegate to the `feature-file-discovery` subagent with the user's feature/flow description.
 
-## Step 4: Consolidation
-Use deduplicate-issues subagent to deduplicate and sort all issues.
+**Prompt:**
+```
+Find all files related to: {user's feature description}
+```
+
+**Store the file list** returned by the subagent for use in subsequent steps.
+
+### Step 2: Code Execution Flow Mapping
+Delegate to the `execution-flow` subagent with the file list from Step 1.
+
+**Prompt:**
+```
+Map the execution flow for these files:
+{file list from Step 1}
+```
+
+**Store the flow path** returned by the subagent for use in the review steps.
+
+### Step 3: Parallel Review
+Launch these three subagents **in parallel** (using multiple Task tool calls in a single message):
+- `security-reviewer`
+- `logic-reviewer`
+- `performance-reviewer`
+
+For each subagent, provide the file list and flow path. The subagents already know what to check for based on their definitions.
+
+**Prompt template for each reviewer:**
+```
+Review these files:
+{file list from Step 1}
+
+Execution flow:
+{flow path from Step 2}
+```
+
+**Collect all results** from the three parallel reviews.
+
+### Step 4: Consolidation
+Delegate to the `deduplicate-issues` subagent with all issues from Step 3.
+
+**Prompt:**
+```
+Deduplicate and organize these issues from multiple reviewers:
+{all issues from Step 3}
+```
 
 ## Output Format
+
+After completing all steps, present the results in this format:
+
 ```
-📁 Files Reviewed (5):
-  - src/auth/LoginController.php
-  - src/middleware/Authenticate.php
-  - src/services/TokenService.php
-  - src/models/User.php
-  - routes/api.php
+📁 Files Reviewed ({count}):
+  - {file path 1}
+  - {file path 2}
+  - ...
 
 📊 Flow Path:
-  HTTP Request → Authenticate middleware → LoginController@login 
-  → TokenService::generate → User::findByEmail → Response
+  {execution flow description from Step 2}
 
-🔍 Found 3 issues :
+🔍 Found {count} issues:
 
-[CRITICAL] Missing rate limiting on login endpoint
-  src/auth/LoginController.php:23
-  → Brute force attacks possible
-  Fix: Add throttle middleware to route
+[CRITICAL] {issue title}
+  {file path}:{line number}
+  → {description of the problem}
+  Fix: {suggested fix}
 
-[HIGH] Token not invalidated on logout
-  src/services/TokenService.php:45
-  → Old tokens remain valid indefinitely
-  Fix: Implement token blacklist or short expiry
+[HIGH] {issue title}
+  {file path}:{line number}
+  → {description of the problem}
+  Fix: {suggested fix}
 
-[MEDIUM] Missing null check on user lookup
-  src/auth/LoginController.php:28
-  → Could throw exception if user doesn't exist
-  Fix: Add null check before proceeding
+[MEDIUM] {issue title}
+  {file path}:{line number}
+  → {description of the problem}
+  Fix: {suggested fix}
 ```
+
+## Important Notes
+
+- **Subagent Definitions**: Each subagent's behavior is already defined in `.cursor/agents/`. You don't need to repeat their instructions - just invoke them with the necessary data.
+- **Context Isolation**: Each subagent starts with a clean context. Include all necessary information (file lists, flow paths) in the prompt you send to each subagent.
+- **Parallel Execution**: Launch the three review subagents in Step 3 simultaneously using multiple Task tool calls in a single message for efficiency.
+- **Data Passing**: Since subagents don't share context, explicitly include all relevant data (file lists, flow paths) in each subagent's prompt.

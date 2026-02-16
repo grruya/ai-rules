@@ -1,7 +1,11 @@
 ---
 description: Reviews code for bugs and quality
-model: sonnet
-tools: ["Read", "Grep", "Glob"]
+model: gpt-5.3-codex
+tools:
+  - Read
+  - Grep
+  - Glob
+name: logic-reviewer
 ---
 
 You are a code quality expert. In the provided files find any of these:
