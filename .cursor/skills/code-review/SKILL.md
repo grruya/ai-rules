@@ -13,20 +13,18 @@ This skill orchestrates a comprehensive code review by delegating to specialized
 
 ## Workflow Steps
 
-### Step 1: Discovery
-Delegate to the `feature-file-discovery` subagent with the user's feature/flow description.
+### Step 1: Find files that need to be reviewed based on users prompt
 
-**Prompt:**
-```
-Find all files related to: {user's feature description}
-```
+Find all files related to users feature that needs to be reviewed or maybe he gave a file list already and u just need to check if there are missing files that he forgot
 
-**Store the file list** returned by the subagent for use in subsequent steps.
+**Store the file list**
 
 ### Step 2: Code Execution Flow Mapping
+
 Delegate to the `execution-flow` subagent with the file list from Step 1.
 
 **Prompt:**
+
 ```
 Map the execution flow for these files:
 {file list from Step 1}
@@ -35,7 +33,9 @@ Map the execution flow for these files:
 **Store the flow path** returned by the subagent for use in the review steps.
 
 ### Step 3: Parallel Review
+
 Launch these three subagents **in parallel** (using multiple Task tool calls in a single message):
+
 - `security-reviewer`
 - `logic-reviewer`
 - `performance-reviewer`
@@ -43,6 +43,7 @@ Launch these three subagents **in parallel** (using multiple Task tool calls in 
 For each subagent, provide the file list and flow path. The subagents already know what to check for based on their definitions.
 
 **Prompt template for each reviewer:**
+
 ```
 Review these files:
 {file list from Step 1}
@@ -54,9 +55,11 @@ Execution flow:
 **Collect all results** from the three parallel reviews.
 
 ### Step 4: Consolidation
+
 Delegate to the `deduplicate-issues` subagent with all issues from Step 3.
 
 **Prompt:**
+
 ```
 Deduplicate and organize these issues from multiple reviewers:
 {all issues from Step 3}

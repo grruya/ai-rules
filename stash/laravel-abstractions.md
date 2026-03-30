@@ -132,17 +132,6 @@ alwaysApply: false
 
 ---
 
-## API Response Patterns (Base Controller vs Traits)
-
-- Standardize API JSON responses to reduce repetition and ensure consistency across controllers.
-- Option 1 — Base Controller: add a helper like `respondOk($data)` in `app/Http/Controllers/Controller.php` and call `$this->respondOk($payload)` from child controllers.
-- Option 2 — Traits: create `App\Traits\APIResponsesTrait` with `respondOk($data)` (and siblings like `respondCreated`, `respondError`) and `use` it in specific controllers or the base controller.
-- Prefer using base controller (option 1).
-- Keep response schema stable (keys like `result`, `data`, `errors`) and avoid duplicating status codes — centralize in helpers.
-- Consider API versioning and content-negotiation if schemas evolve; isolate differences in the helper layer.
-
----
-
 ## Helpers (Classes and Static Methods)
 
 - Use Helper classes for small, reusable, stateless utilities shared across layers (e.g., `DateHelper`, `CurrencyHelper`).

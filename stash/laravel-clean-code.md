@@ -1,0 +1,81 @@
+---
+description: Senior Laravel Architect that enforces strict PHP 8+ typing, slim CRUD controllers, and final Action classes. Mandates early returns, constructor promotion, explicit model casts(), and FormRequests. Prioritizes Eloquent (eager loading, relationships) and Value Objects while forbidding env() usage in code and "try-catch pyramids."
+globs: ["*.php"]
+alwaysApply: false
+---
+
+# PHP & Laravel Clean Code Standards
+
+## 1. Clean Code
+
+- **Early Returns:** Avoid nested `if` statements. Use guard clauses (e.g., `if (!$condition) return;`) to keep the "happy path" at the lowest indentation level.
+- **Simplicity:** Favor simplicity over "clever" code. Avoid recursion, deep callbacks, and complex abstractions unless strictly necessary.
+- **Separation of Concerns:** Follow the Single Responsibility Principle. Do not extract methods smaller than 7-8 lines.
+- **Defensive Programming:** Use defensive checks where PHP type-hinting cannot fully guarantee data integrity.
+- **Method Limits:** Methods should have a maximum of **4 parameters**.
+- **State Validation:** Ensure methods or classes are not performed on unintended data states. (e.g., A `cancel()` method on a `Reservation` model must first check if the status allows cancellation, throwing an exception if not).
+- **Scope:** Keep variables as close as possible to the block where they are consumed.
+- **Self-Documenting Code:** Write code that explains _what_ it does through naming.
+- **Naming:** Use full, descriptive words. Avoid abbreviations (e.g., use `$subscription` instead of `$sub`).
+
+## 2. Comments: never add them to my code no matter what except for PHPDocs
+
+## 3. Type Safety
+
+- **PHPDoc:** Only use PHPDoc to define complex data structures (arrays of objects). Do not use `@param` or `@return` for types already covered by native PHP type hints. Limit PHPDoc nesting to 1-2 levels.
+- **Value Objects:** Encapsulate domain concepts (Email, Money) into objects that validate domain invariants in the constructor.
+- **Strict Typing:** Always type-hint method parameters and return types. Avoid type juggling.
+- **Null Object Pattern:** Favor returning a new, empty instance of an object (e.g., `return new Cart();`) instead of `null` to avoid union type hints and simplify caller logic.
+
+## 4. PHP Conventions
+
+- **Constructor Property Promotion:** Always use PHP 8+ constructor property promotion (e.g., `public function __construct(public GitHub $github) {}`).
+- **No Empty Constructors:** Do not allow `__construct()` methods with zero parameters unless the constructor is `private` (for singleton or factory patterns).
+
+## 5. Laravel Conventions
+
+- **Imports:** Always use FQCN imports at the top of the file via `use` statements. Never use inline fully-qualified class names.
+- **Auth:** Use Laravel's built-in authentication and authorization features (gates, policies, Sanctum, etc.).
+- **URL Generation:** When generating links to other pages, prefer named routes and the `route()` function.
+- **Config:** Use environment variables only in configuration files - never use the `env()` function directly outside of config files. Always use `config('app.name')`, not `env('APP_NAME')`.
+- **Queues:** Use queued jobs for time-consuming operations with the `ShouldQueue` interface.
+- **APIs:** For APIs, default to using Eloquent API Resources and API versioning unless existing API routes do not, then you should follow existing application convention.
+- **Migrations:** Keep business logic out of the database. Avoid default values or enums in migrations if that logic belongs in the application layer.
+
+## 6. Controllers
+
+- **Slim Controllers:** Controllers must only contain CRUD methods (`index`, `store`, `show`, `update`, `destroy`).
+- **Invocable Controllers:** For non-CRUD logic, use a single-purpose invocable controller (e.g., `UserExportController`).
+- **No Private Logic:** Controllers must not contain private methods, business logic or validations. Delegate to **Action** classes and **FormRequests**.
+- **Form Requests:** Always create Form Request classes for validation rather than inline validation in controllers. Include both validation rules and custom error messages. Check sibling Form Requests to see if the application uses array or string based validation rules.
+- **Rule Classes:** If need to make custom validation logic create a laravel Rule class `php artisan make:rule Uppercase`
+
+## 7. Action Classes
+
+- **Structure:** Must be `final` and contain exactly one public method: `handle()`. If more methods are needed, they must be `private`.
+- **Naming:** Must start with a verb (e.g., `CreateOrder`, `ProcessPayment`).
+- **Agnosticism:** Actions must be agnostic of the entry point. Do not handle HTTP requests or sessions inside an Action.
+- **Transactions:** Wrap multi-step database operations in `DB::transaction`.
+
+## 8. Models / Eloquent
+
+- **Model Casting:** Every model must implement a `protected function casts(): array` method. Explicitly cast all columns, including timestamps.
+- **Eloquent Best Practices:** Use built-in Laravel methods like `firstOrFail()`, `updateOrCreate()`... instead of manual check-and-flow logic. Use Eloquent models and relationships before suggesting raw database queries. Avoid `DB::`; prefer `Model::query()`.
+- **Relationships:** Always use proper Eloquent relationship methods with return type hints. Prefer relationship methods over raw queries or manual joins.
+- **N+1 Prevention:** Generate code that prevents N+1 query problems by using eager loading. Use the query builder only for very complex operations.
+- **Model Creation:** When creating new models, create useful factories and seeders for them too. Ask the user if they need any other things, using `list-artisan-commands` to check the available options to `php artisan make:model`.
+- **Custom Casts:** Use Custom Casts to bridge DB primitives and rich Value Objects in models.
+- **Hidden columns:** Make sure to put sensitive data that should not be accessible to public in hidden array
+- **Unguarded Models:** In case the project uses unguarded models then dont use the fillable array just make sure to guard sensitive data
+
+## 9. Testing
+
+- **Factories:** When creating models for tests, use the factories for the models. Check if the factory has custom states that can be used before manually setting up the model.
+- **Faker:** Use methods such as `$this->faker->word()` or `fake()->randomDigit()`. Follow existing conventions whether to use `$this->faker` or `fake()`.
+- **Creation:** When creating tests, make use of `php artisan make:test [options] {name}` to create a feature test, and pass `--unit` to create a unit test. Most tests should be feature tests.
+
+## 10. Error Handling & Environment
+
+- **Let it Bubble:** Avoid "Try-Catch Pyramids." Allow exceptions to bubble up to Laravel’s Global Exception Handler unless you need to perform a specific retry or fallback.
+- **Fallback Logic:** Only catch exceptions in code if you have a functional alternative (e.g., returning a cached result or an empty state) to show the user.
+- **Vite Error:** If you receive an "Illuminate\Foundation\ViteException: Unable to locate file in Vite manifest" error, you can run `npm run build` or ask the user to run `npm run dev` or `composer run dev`.
