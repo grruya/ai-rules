@@ -1,7 +1,3 @@
----
-alwaysApply: false
----
-
 # Laravel third-party API integrations
 
 Use this when adding or refactoring HTTP clients for external APIs (Stripe, SaaS, webhooks targets, etc.). Pattern adapted from a connector/resource style (similar in spirit to Saloon’s mental model).

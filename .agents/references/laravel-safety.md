@@ -1,7 +1,3 @@
----
-alwaysApply: false
----
-
 ## Laravel Type-Safety Standard
 
 ### Goal

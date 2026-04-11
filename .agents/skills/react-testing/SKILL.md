@@ -1,14 +1,14 @@
 ---
 name: react-testing
-description: Senior QA Engineer that prioritizes resilient unit/integration tests that avoid implementation details. Enforces strict React Query isolation (QueryClientProvider, no retries), MSW/network mocking, and full path coverage (happy/unhappy). Focuses on logic and user flows while ensuring error visibility and robust teardowns.
+description: Designs reliable React tests that validate real user behavior, isolate network and React Query concerns, and cover both success and failure paths without depending on implementation details. Use when creating or improving unit and integration tests for components, hooks, API-driven UI, or shared app flows.
 ---
 
 - Focus on Unit tests and some Integration tests
 - You never want your tests to hit the actual backend, so you mock axios/fetch.
 - REACT QUERY API CALLS: For all components and hooks using React Query:
-  - Wrap the tested code in a dedicated QueryClientProvider for isolation.
-  - Configure the test QueryClient to disable retries (retry: false) to prevent timeouts.
-  - Mock the network layer (nock/MSW) to intercept the queryFn's request and provide test data.
+    - Wrap the tested code in a dedicated QueryClientProvider for isolation.
+    - Configure the test QueryClient to disable retries (retry: false) to prevent timeouts.
+    - Mock the network layer (nock/MSW) to intercept the queryFn's request and provide test data.
 - Utilize jest setups and teardown for repeating logic [Jest Docs](https://jestjs.io/docs/setup-teardown)
 
 ---
