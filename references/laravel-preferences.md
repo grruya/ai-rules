@@ -11,6 +11,16 @@
 - Keep actions free of HTTP and session so any entry point can call them.
 - Wrap multi-step database changes in `DB::transaction`, but expect pain on very large tables (e.g., history).
 
+## Helper classes for simple non-business logic
+
+- They need to have suffix `Helper`
+- Need to be `final readonly`
+- Every method should be `public static` no private methods allowed
+
+## Complex queries
+
+- Place complex queries in `app/Queries` (e.g., `UserListQuery`) and return an Eloquent Builder the controller can chain.
+
 ## Migrations
 
 - Avoid `onDelete('cascade')` in migrations and perform deletes in application code for clearer side effects.
@@ -19,10 +29,6 @@
 ## Models
 
 - Document every column with `@property` in PHPDoc for full static analysis coverage.
-
-## Complex queries
-
-- Place complex queries in `app/Queries` (e.g., `UserListQuery`) and return an Eloquent Builder the controller can chain.
 
 ## Form Requests and Validation
 
