@@ -101,7 +101,6 @@ Spawn these four agents **in parallel**. Call `spawn_agent` four times first, th
 - `security-reviewer`
 - `logic-reviewer`
 - `performance-reviewer`
-- `code-quality-reviewer`
 
 Each agent already encodes what to look for. Pass all of the following to each one:
 
