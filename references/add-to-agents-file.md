@@ -1,0 +1,1 @@
+- Avoid naming files or functions containing this words "normalize, build, resolve" be explicit with naming and what it does

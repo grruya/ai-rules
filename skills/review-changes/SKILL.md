@@ -8,19 +8,9 @@ description: >-
 
 # Review changes (multi-agent)
 
-Manual activation only: use this skill only when the user explicitly invokes
-`/review-changes`, tags this skill, or asks for this review command by name.
-
-Run the **change review pipeline** by orchestrating the custom Codex agents defined in `.codex/agents/`. Keep the parent agent thin: resolve the target, spawn the agents, wait, and format the result. Do not do the reviewers' work in the parent thread.
-
-Token budget rules:
-
-- Do not paste whole file contents into subagent prompts.
-- Do not paste the full raw diff unless the review target is a tiny patch. Prefer changed file paths plus changed hunks or a short diff summary.
+- Run the **change review pipeline** by orchestrating the custom Codex agents defined in `.codex/agents/`. Keep the parent agent thin: resolve the target, spawn the agents, wait, and format the result. Do not do the reviewers' work in the parent thread.
 - Keep all handoff packets compact. If a subagent needs code, let it inspect the repository itself.
 - Call `spawn_agent` for the four reviewers before calling `wait_agent`; do not run reviewers serially.
-
-This pipeline is for **change-level review only**.
 
 The reviewers should understand the wider execution flow, but they should review and report findings only for the **changed files** in the requested change set.
 

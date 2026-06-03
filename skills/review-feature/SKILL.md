@@ -8,18 +8,9 @@ description: >-
 
 # Full code review (multi-agent)
 
-Manual activation only: use this skill only when the user explicitly invokes
-`/review-feature`, tags this skill, or asks for this review command by name.
-
-Run the **code review pipeline** by orchestrating the custom Codex agents defined in `.codex/agents/`. Keep the parent agent thin: resolve the starting feature, spawn the agents, wait, and format the result. Do not do the reviewers' work in the parent thread.
-
-Token budget rules:
-
-- Do not paste whole file contents into subagent prompts.
+- Run the **change review pipeline** by orchestrating the custom Codex agents defined in `.codex/agents/`. Keep the parent agent thin: resolve the target, spawn the agents, wait, and format the result. Do not do the reviewers' work in the parent thread.
 - Keep all handoff packets compact. If a subagent needs code, let it inspect the repository itself.
 - Call `spawn_agent` for the four reviewers before calling `wait_agent`; do not run reviewers serially.
-
-This pipeline is for **feature-level review only**.
 
 ## Step 1 — Map the full feature execution flow
 

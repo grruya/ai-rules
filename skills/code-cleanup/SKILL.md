@@ -8,14 +8,6 @@ description: >-
 
 # Code Cleanup
 
-Manual activation only: use this skill only when the user explicitly invokes
-`/code-cleanup`, tags this skill, or asks for this cleanup command by
-name.
-
-Clean up code so it follows the current project patterns, keeps files and
-functions focused, uses honest names, returns meaningful results, and avoids
-unnecessary defensive checks or type checks.
-
 Assume the target code may be AI-generated. Be especially alert for AI-style
 overengineering:
 
