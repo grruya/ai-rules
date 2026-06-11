@@ -4,20 +4,22 @@
 
 Make bad data hard to carry across boundaries: lean on types at edges, small immutable objects for structured data, and static analysis when PHPStan is in the project.
 
-### Value object vs DTO
+### Value object vs DTO vs typed array
 
-| Kind          | Role                                                     | Behavior                                                                                        |
-| ------------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| Value object  | Domain idea with rules (`Money`, `Email`, `Duration`)    | Validate in the constructor or static factories; small domain methods are fine; compare by value |
-| DTO           | Data between layers (HTTP to service, service to job)    | No business logic; readonly typed properties; build at the boundary after validation            |
+| Kind         | Role                                                  | Behavior                                                                                         |
+| ------------ | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Value object | Domain idea with rules (`Money`, `Email`, `Duration`) | Validate in the constructor or static factories; small domain methods are fine; compare by value |
+| DTO          | Larger or nested data passed across multiple layers   | No business logic; readonly typed properties; build at the boundary after validation             |
+| Typed array  | Validated payload local to one flow                   | Document the shape with PHPDoc and pass it directly where Laravel already handles the data well  |
 
 Do not use Eloquent models as DTOs. Do not attach persistence logic to DTOs.
 
 ### Replace mystery arrays with types
 
-- When the shape is known, avoid untyped `import($data)` or a parameter named `$data`; use a named type such as `ImportTransaction` or `TransactionImportRow`.
-- Use `array $things` only when the structure is truly variable; otherwise prefer a class with typed properties.
-- Typed parameters improve IDE support, refactors, and API contracts.
+- When the shape is known, avoid untyped `$data`; document it with PHPDoc like `array{name: string, email: string}`.
+- Prefer PHPDoc typed arrays for validated Laravel request payloads that stay local to one flow, especially when the payload can be passed directly into Eloquent `create()`, `update()`, or `fill()`.
+- Use a DTO only when the payload crosses multiple layers, is reused in several places, is very large, deeply nested, or represents a stable API/job/event contract.
+- Typed array shapes improve IDE support and static analysis without adding unnecessary mapping code.
 
 ### Value objects
 
@@ -49,7 +51,7 @@ final readonly class Duration
 - Use `public readonly` properties with scalars or value objects as needed.
 - Provide explicit factories such as `fromArray()`, `fromRequest()` (or from a validated array), and optionally `fromModel()` on read paths.
 - Call `toArray()` only at boundaries (responses, queue payloads), not throughout domain code.
-- Validate first via Form Request, `validate()`, or equivalent, then build the DTO, then pass it inward to services.
+- Validate first via Form Request, `validate()`, or equivalent. If the data stays local and maps cleanly to Eloquent, keep the validated array. If it crosses multiple layers or gets complex, build a DTO.
 
 Keep each DTO small and single-purpose: one type per direction and use case. Avoid one `UserDTO` for create, update, API responses, and jobs when the fields diverge.
 
@@ -75,7 +77,12 @@ final readonly class CreateUserDTO
 }
 ```
 
-Use DTOs for controller-to-service calls, job and event constructors, stable API shapes, and heavy payloads. Skip them for trivial one-off parameters.
+Use DTOs for large or nested controller-to-service payloads, job and event constructors with stable contracts, stable API shapes, and heavy payloads. Skip them when a validated array is clearer, especially for straightforward Eloquent writes.
+
+### DTO vs typed array
+
+- Use a PHPDoc typed associative array by default for validated request data that stays in one flow, even when it has many fields, as long as the structure is still easy to read.
+- Use a DTO when the payload is reused across many layers, very large, nested, represents an important contract, or needs named factory methods.
 
 ### Immutability defaults
 
