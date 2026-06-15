@@ -1,7 +1,22 @@
 ---
-name: react-patterns
-description: Builds clean, maintainable React and TypeScript code by enforcing strong component boundaries, disciplined state/effect usage, and practical performance patterns. Use when writing, refactoring, or reviewing React components, hooks, and frontend logic for clarity, scalability, and fewer re-render bugs.
+name: react-guidelines
+description: >-
+    React code style guidance for clean components, hooks, state, effects,
+    component boundaries, and practical rendering decisions. Use only when writing or reviewing React code.
 ---
+
+**Use this skill when**:
+
+- Writing or changing React components, hooks, JSX, or React-specific frontend logic.
+- Reviewing React code for clarity, state management, effects, rendering behavior, or maintainability.
+- Refactoring React code to reduce coupling, re-render bugs, or messy boundaries.
+
+**Do not use this skill when**:
+
+- The task does not involve writing, editing, refactoring, or reviewing React code.
+- The task is only regular TypeScript, JavaScript, utilities, API clients, data mapping, or business logic outside React.
+- The task is only backend code, API design, database work, documents, spreadsheets, or presentations.
+- The task is only formatting, copy changes, or asset edits with no React structure decision.
 
 # React & TypeScript Development Standards
 
@@ -17,7 +32,7 @@ description: Builds clean, maintainable React and TypeScript code by enforcing s
 Use the smallest boundary that keeps the code obvious:
 
 - **Keep in Components:** JSX/layout, tiny UI state (`isOpen`, selected tab, input text), simple event handlers that only affect that component, and wiring props or hook results into UI.
-- **Move to Custom Hooks:** React behavior, stateful UI behavior, form flows, animation state, screen-specific data wiring, and logic that coordinates hooks such as `useState`, `useEffect`, `useMemo`, `useQuery`, or `useMutation` into a named behavior.
+- **Move to Custom Hooks:** React behavior, stateful UI behavior, form flows, animation state, screen-specific data wiring, and logic that coordinates hooks such as `useState`, `useEffect`, `useQuery`, or `useMutation` into a named behavior.
 - **Move to Regular `.ts` Files:** Logic that does not need React, such as business rules, formatting, validation, calculations, API-data mapping, permission checks, API calls, and pure functions that should be easy to test.
 
 ## 3. `useEffect` Rules

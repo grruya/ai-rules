@@ -1,8 +1,7 @@
 ---
 name: clean-code
 description: >-
-    Apply concise, language-agnostic clean-code standards only when writing,
-    editing, refactoring, or generating code. Never use this skill outside of writing, editing or giving code snippets.
+    Language-agnostic clean-code standards. Use only when writing or editing code.
 ---
 
 # Clean Code Standards

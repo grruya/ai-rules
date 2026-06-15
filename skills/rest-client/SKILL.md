@@ -1,7 +1,16 @@
 ---
 name: rest-client
-description: Use when creating, editing, explaining, or reviewing VS Code REST Client `.http` or `.rest` files for API testing, including requests, variables, auth headers, GraphQL, cURL snippets, and request chaining.
+description: >-
+    VS Code REST Client guidance for concise, runnable, and safe `.http` or `.rest`
+    API request files. Use when creating, editing, explaining, or reviewing REST Client
+    requests, variables, auth headers, GraphQL calls, cURL snippets, or request chaining.
 ---
+
+**Do not use this skill when**:
+
+- The task does not involve `.http` or `.rest` files.
+- The user needs production API client code, SDK code, or backend route implementation.
+- The task is only general API design, OpenAPI docs, Postman collections, or shell `curl` usage outside REST Client files.
 
 # REST Client
 

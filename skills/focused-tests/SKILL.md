@@ -1,9 +1,9 @@
 ---
 name: focused-tests
 description: >-
-    Skill for writing only the valuable test cases for a feature, not an exhaustive checklist of every observable detail. Can be used for both frontend and backend tests, 
-    and for any type of test (unit, integration, end-to-end, etc.) as long as the focus is on the feature contract and user-visible behavior rather than implementation details.
-    Trigger whenever any test is being written, edited, fixed, or refactored — including fixing tests that broke after a code change, adding assertions
+    Test-writing guidance for focused, valuable coverage based on feature contracts and
+    user-visible behavior instead of implementation details. Use when writing or
+    reviewing frontend, backend, unit, integration, or end-to-end tests.
 ---
 
 # Core principles:
