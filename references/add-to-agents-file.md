@@ -6,4 +6,7 @@
 
 # Testing
 
-- Tests should mirror the project directory structure
+- Test files should mirror the structure and location of the corresponding files in app or src dirs.
+- For every code change or new feature, decide whether to add or update tests based on risk:
+    - Could this prevent the user from completing their intended action?
+    - Could this cause serious consequences if it fails?

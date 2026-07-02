@@ -20,7 +20,7 @@ description: >-
 
 # Controllers
 
-- A controller should only hold CRUD actions: `index`, `store`, `show`, `update`, `destroy`.
+- A controller should only hold CRUD actions: `index`, `show`, `create`, `store`, `edit`, `update`, `destroy`.
 - Use a single-purpose invocable controller for anything else (e.g., `UserExportController`).
 - Do not add private methods, business logic, or validation in controllers.
 
@@ -58,10 +58,6 @@ description: >-
 
 - Avoid `onDelete('cascade')` in migrations and perform deletes in application code for clearer side effects.
 - Avoid database defaults in migrations; set defaults inside Actions.
-
-# Models
-
-- Document every column with `@property` in PHPDoc for full static analysis coverage.
 
 # DTOs, value objects, and typed arrays
 

@@ -15,13 +15,12 @@ Use this skill only while producing code changes or code snippets.
 - **Early Returns:** Avoid nested `if` statements. Use guard clauses (e.g., `if (!$condition) return;`) to keep the "happy path" at the lowest indentation level.
 - **Simplicity:** Favor simplicity over "clever" code. Avoid recursion, deep callbacks, and complex abstractions unless strictly necessary.
 - **Method Limits:** Methods should have a maximum of **4 parameters**.
-- **Scope:** Keep variables as close as possible to the block where they are consumed.
 
 ## Writing Style
 
 - Write code like reading instructions: a linear sequence of clear steps where each line explains what happens next, avoiding hidden logic, deep nesting, or unclear jumps in execution.
-- Never place complex logic inside if parentheses. Extract complex conditions into descriptive boolean variables before the if statement.
-- Never add comments to my code no matter what
+- Never place complex logic inside if parentheses. Extract complex conditions into descriptive variables before the if statement.
+- Never add comments to code no matter what
 
 ## Example
 

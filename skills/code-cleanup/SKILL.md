@@ -34,7 +34,7 @@ overengineering:
       nothing instead of a boolean, available place, or `null`
     - unnecessary defensive checks, type checks, or fallback branches where the
       code already guarantees the type, presence, or state
-    - duplicated ceremony or helper layers that do not simplify the feature
+    - unnecessary methods that could be directly put in other methods or just inlined if they are short
     - dead code or code that is used but it does not solve the problem so it can be removed
     - fallbacks without real meaning
 
