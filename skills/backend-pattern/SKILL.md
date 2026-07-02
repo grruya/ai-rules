@@ -26,10 +26,10 @@ description: >-
 
 # Action classes for business logic that modifies data
 
-- Make each action `final readonly` with a single public `handle()` and keep other methods `private`.
+- Single public method `handle()`.
 - Start the class name with a verb (e.g., `CreateOrder`, `DeleteUser`).
 - Actions need to be only around data modification like CreateUser, UpdateUser, DeleteUser or some other cases like ChargeCustomer
-- Actions must not be used for read operations, use Query class instead.
+- Actions must not be used for read operations.
 - Keep actions free of HTTP and session so any entry point can call them.
 - Wrap multi-step database changes in `DB::transaction`, but expect pain on very large tables (e.g., history).
 
@@ -37,22 +37,21 @@ description: >-
 
 - Use Support classes for logic that does not fit a Action, Query, Helper, Resource, Value Object or Dto class
 - Support class can be made just for some read only purpose except if that only purpose is reading from database then use a Query class for that.
-- Support classes must not modify system data or external system data. Use a Action class for that.
+- Support classes must not modify system data or external system data.
 - Do not use Support classes for client output formatting or simple data mapping; use Laravel Resources, frontend presentation code, or DTOs instead.
-- Make each Support class `final readonly` with only one public method named handle.
+- Single public method named handle.
 - Start the class name with a verb (e.g., `SortPropertiesByMinimumPrice`, `GenerateTermsOfServiceText`).
 
 # Helper classes for simple non-business logic
 
 - They need to have suffix `Helper`
-- Need to be `final readonly`
 - Every method should be `public static` no private methods allowed
 
 # Query classes for bigger read logic
 
 - Use Query class when u need bigger read operations since actions should not be used for this purpose
 - Place them in `app/Queries` and follow this naming convention. If query gives back a list name it like `UserListQuery` if it does not give a list then just `CartChangeTimelineQuery`
-- Query classes have only one public method named "builder" and return an Eloquent Builder the controller can chain.
+- One public method named "builder" and return an Eloquent Builder so users can chain.
 
 # Migrations
 
